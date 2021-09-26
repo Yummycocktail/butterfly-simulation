@@ -1,0 +1,145 @@
+<!-- ------------------------------------ Симулятор бабочки в клетке --------------------------------------- -->
+<-- HTML -->
+	<div class="sqrds">
+		<?php for($i = 1; $i < 101; $i++): ?>
+			<div class="square" id="div_id_<?php echo $i ?>">
+				<div class="numm"><?php //echo $i ?></div>
+			</div>
+		<?php endfor ?>
+		
+		
+		</div>
+		<button id="start">Старт</button>
+		<button id="stop">Стоп</button>
+    
+<-- CSS -->
+.sqrds{
+	display: flex;
+	flex-wrap: wrap;
+	width: 350px;
+}
+.square{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 35px;
+	height: 35px;
+	cursor: pointer;
+	color: green;
+	background-color: black;
+	transition: 0.1s;
+}
+
+<-- JS -->
+<script> 
+	let cells = document.querySelectorAll('.square'); // получаем все квадраты
+	let startPosition = 55;
+	cells[startPosition - 1].style.backgroundColor = "red";
+	for(let i = 0; i < cells.length; i++) // рисуем бортики
+	{
+		if((i + 1) > 0 && i < 10)
+		{
+			cells[i].style.backgroundColor = "orange";	// верхний бортик	
+		}
+		if((i + 1) > 90 && i < 100)
+		{
+			cells[i].style.backgroundColor = "orange";	// нижний бортик
+		}
+		if(i == 10 || i == 20 || i == 30 || i == 40 || i == 50 || i == 60 || i == 70 || i == 80)
+		{
+			cells[i].style.backgroundColor = "orange";	// левый бортик
+		}
+		if(i == 19 || i == 29 || i == 39 || i == 49 || i == 59 || i == 69 || i == 79 || i == 89)
+		{
+			cells[i].style.backgroundColor = "orange";	// правый бортик
+		}
+	}
+
+	function move() // задает юниту направление следующего шага
+	{
+		function makeRand()
+		{
+			const moves = ['up', 'right', 'down', 'left'];
+			let randMove = moves[Math.floor(Math.random()*moves.length)];
+			return randMove;
+		}
+		let rrr = makeRand();
+		// console.log(rrr);
+
+		if(rrr === 'down')
+		{
+			let newPosition = 10;
+			cells[startPosition - 1].style.backgroundColor = "black";
+			let newPos = startPosition + (newPosition - 1);
+			if(cells[newPos].style.backgroundColor === "orange")
+			{
+				return false;
+			}
+			else
+			{
+				cells[newPos].style.backgroundColor = "red";
+				startPosition = newPos + 1;
+				newPosition = "";
+			}
+			
+		}
+		else if(rrr === 'right')
+		{
+			let newPosition = 1;
+			cells[startPosition - 1].style.backgroundColor = "black";
+			let newPos = startPosition - (newPosition - 1);
+			if(cells[newPos].style.backgroundColor === "orange")
+			{
+				return false;
+			}			
+			else
+			{
+				cells[newPos].style.backgroundColor = "red";
+				startPosition = newPos + 1;
+				newPosition = "";				
+			}
+
+		}
+		else if(rrr === 'up')
+		{
+			let newPosition = 10;
+			cells[startPosition - 1].style.backgroundColor = "black";
+			let newPos = startPosition - (newPosition + 1);
+			if(cells[newPos].style.backgroundColor === "orange")
+			{
+				return false;
+			}			
+			else
+			{
+				cells[newPos].style.backgroundColor = "red";
+				startPosition = newPos + 1;
+				newPosition = "";				
+			}
+
+		}
+		else if(rrr === 'left')
+		{
+			let newPosition = 1;
+			cells[startPosition - 1].style.backgroundColor = "black";
+			let newPos = startPosition - (newPosition + 1);
+			if(cells[newPos].style.backgroundColor === "orange")
+			{
+				return false;
+			}			
+			else
+			{
+				cells[newPos].style.backgroundColor = "red";
+				startPosition = newPos + 1;
+				newPosition = "";				
+			}
+
+		}					
+	}
+
+	document.getElementById('start').addEventListener('click', () => {
+		let timerId = setInterval (move, 100);
+		document.getElementById('stop').addEventListener('click', () => {
+		clearInterval(timerId);
+	});
+	});	 
+</script>
